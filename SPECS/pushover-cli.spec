@@ -17,6 +17,7 @@ Summary:        A simple terminal UI for git commands, written in Go with the go
 Group:          Applications/System
 License:        MIT
 URL:            https://github.com/%{gh_user}/%{name}
+Source:         https://github.com/%{gh_user}/%{name}/archive/%{version}.tar.gz
 BuildRequires:  git golang
 
 %description
@@ -25,19 +26,10 @@ you're too stubborn to use Sourcetree because you'll never forgive Atlassian
 for making Jira? This is the app for you!
 
 %prep
-wget https://github.com/%{gh_user}/%{name}/archive/%{version}.tar.gz
-tar xzf %{version}.tar.gz
-mkdir -p %{_builddir}/src/github.com/%{gh_user}/
-cd %{_builddir}/src/github.com/%{gh_user}/
-ln -snf %{_builddir}/%{name}-%{version} %{name}
-cd %{name}
+%setup -q -n %{name}-%{version}
 
 %build
-export GOPATH="%{_builddir}"
-export PATH=$PATH:"%{_builddir}"/bin
-cd %{_builddir}/src/github.com/%{gh_user}/%{name}
 export LDFLAGS="${LDFLAGS} -X main.GitCommit=%{gh_short} -X main.AppVersion=%{version}"
-export GO111MODULE=on
 %gobuild -o %{_builddir}/bin/%{name}
 
 %install
@@ -49,4 +41,3 @@ install -Dm0755 %{_builddir}/bin/%{name} %{buildroot}%{_bindir}/%{name}
 %changelog
 * Mon Apr 8 2019 Jamie Curnow <jc@jc21.com> 1.0.1-1
 - Initial Spec
-
