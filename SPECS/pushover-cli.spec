@@ -12,7 +12,7 @@
 
 Name:           pushover-cli
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        1
 Summary:        A simple terminal UI for git commands, written in Go with the gocui library
 Group:          Applications/System
 License:        MIT
