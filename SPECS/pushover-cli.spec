@@ -6,9 +6,6 @@
 
 # see https://fedoraproject.org/wiki/PackagingDrafts/Go#Build_ID
 %global _dwz_low_mem_die_limit 0
-%if ! 0%{?gobuild:1}
-%define gobuild(o:) go build -ldflags "${LDFLAGS:-} -B 0x$(head -c20 /dev/urandom|od -An -tx1|tr -d ' \\n') " -i -v -x %{?**};
-%endif
 
 Name:           pushover-cli
 Version:        1.0.1
@@ -30,7 +27,7 @@ for making Jira? This is the app for you!
 
 %build
 export LDFLAGS="${LDFLAGS} -X main.GitCommit=%{gh_short} -X main.AppVersion=%{version}"
-%gobuild -o %{_builddir}/bin/%{name}
+go build -o %{_builddir}/bin/%{name}
 
 %install
 install -Dm0755 %{_builddir}/bin/%{name} %{buildroot}%{_bindir}/%{name}
